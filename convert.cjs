@@ -19,7 +19,21 @@ function getCompiledCSS() {
   return fs.readFileSync(path.join(assetsDir, cssFile), "utf-8");
 }
 
-// ─── Step 3: Serve dist and scrape ───
+// ─── Step 3: Get compiled JS from dist ───
+function getCompiledJS() {
+  const assetsDir = path.join("dist", "assets");
+  if (!fs.existsSync(assetsDir)) return "";
+  const jsFiles = fs.readdirSync(assetsDir).filter(f => f.endsWith(".js"));
+  if (!jsFiles.length) return "";
+  // Grab the largest JS file (main bundle)
+  const mainJS = jsFiles
+    .map(f => ({ name: f, size: fs.statSync(path.join(assetsDir, f)).size }))
+    .sort((a, b) => b.size - a.size)[0].name;
+  console.log(`✅ Found compiled JS: ${mainJS}`);
+  return fs.readFileSync(path.join(assetsDir, mainJS), "utf-8");
+}
+
+// ─── Step 4: Serve dist and scrape ───
 async function scrapeRenderedHTML() {
   let serverProcess;
 
@@ -36,7 +50,6 @@ async function scrapeRenderedHTML() {
     detached: true,
   });
 
-  // Wait for server to be ready
   await new Promise(resolve => setTimeout(resolve, 3000));
 
   console.log("🤖 Launching Puppeteer...");
@@ -54,10 +67,8 @@ async function scrapeRenderedHTML() {
     timeout: 30000,
   });
 
-  // Wait for content to render
   await new Promise(resolve => setTimeout(resolve, 2000));
 
-  // Extract just the main content
   const mainHTML = await page.evaluate(() => {
     const main = document.querySelector("main");
     if (main) return main.outerHTML;
@@ -89,14 +100,13 @@ async function scrapeRenderedHTML() {
   try {
     const mainHTML = await scrapeRenderedHTML();
     const compiledCSS = getCompiledCSS();
+    const compiledJS = getCompiledJS();
     const indexCSS = fs.existsSync("src/index.css")
       ? fs.readFileSync("src/index.css", "utf-8")
       : "";
 
-    // ─── View HBS ───
     const viewContent = `${mainHTML}`;
 
-    // ─── Layout HBS ───
     const layoutContent = `<!DOCTYPE html>
 <html lang="en">
   <head>
@@ -114,10 +124,12 @@ async function scrapeRenderedHTML() {
     {{> header/header}}
     {{{body}}}
     {{> footer/footer}}
+    <script>
+      ${compiledJS}
+    </script>
   </body>
 </html>`;
 
-    // ─── Route ───
     const routeContent = `
 router.get("/${pageName}", function (req, res, next) {
   res.render("${pageName}", {
@@ -128,7 +140,6 @@ router.get("/${pageName}", function (req, res, next) {
 });
 `;
 
-    // ─── Write files ───
     fs.mkdirSync("hbs-output/views/layouts", { recursive: true });
     fs.writeFileSync(`hbs-output/views/${pageName}.hbs`, viewContent);
     fs.writeFileSync(`hbs-output/views/layouts/${pageName}.hbs`, layoutContent);
