@@ -1,0 +1,481 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* IvyPresto Display local font files */
+@font-face {
+  font-family: 'IvyPresto Display';
+  src: url('/fonts/ivy-presto-display-thin.otf') format('opentype');
+  font-weight: 200;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IvyPresto Display';
+  src: url('/fonts/ivy-presto-display-light.otf') format('opentype');
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IvyPresto Display';
+  src: url('/fonts/ivy-presto-display-regular.otf') format('opentype');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'IvyPresto Display';
+  src: url('/fonts/ivy-presto-display-semibold.otf') format('opentype');
+  font-weight: 600 900;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Display font utility */
+.font-display {
+  font-family: 'IvyPresto Display', 'Iowan Old Style', 'Georgia', 'Times New Roman', serif;
+  font-weight: 300;
+  font-style: normal;
+  letter-spacing: -0.02em;
+}
+
+/* Stronger italic rendering for display text on mobile browsers */
+.font-display.italic,
+.font-display em {
+  font-family: 'IvyPresto Display', 'Iowan Old Style', 'Georgia', 'Times New Roman', serif;
+  font-style: oblique 14deg;
+  font-weight: 300;
+  font-synthesis: style;
+}
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 7%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 7%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 7%;
+
+    --primary: 270 91% 58%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 0 0% 96%;
+    --secondary-foreground: 0 0% 7%;
+
+    --muted: 0 0% 96%;
+    --muted-foreground: 0 0% 45%;
+
+    --accent: 0 0% 96%;
+    --accent-foreground: 0 0% 7%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 270 91% 58%;
+
+    --radius: 0.25rem;
+
+    /* MU exact brand tokens */
+    --mu-black: 0 0% 7%;
+    --mu-black-pure: 0 0% 0%;
+    --mu-dark-surface: 0 0% 11%;
+    --mu-card-bg: 0 0% 100%;
+    --mu-gray-100: 0 0% 96%;
+    --mu-gray-200: 0 0% 90%;
+    --mu-gray-300: 0 0% 82%;
+    --mu-gray-400: 0 0% 64%;
+    --mu-gray-500: 0 0% 45%;
+    --mu-gray-600: 0 0% 32%;
+    --mu-gray-700: 0 0% 20%;
+    --mu-gold: 45 100% 50%;
+
+    /* MU colorful gradient palette — no orange */
+    --mu-cyan: 192 100% 50%;
+    --mu-teal: 160 100% 45%;
+    --mu-lime: 76 100% 58%;
+    --mu-yellow: 48 100% 50%;
+    --mu-magenta: 330 100% 60%;
+    --mu-purple: 270 100% 65%;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 270 91% 58%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  html, body {
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    text-rendering: optimizeLegibility;
+    overscroll-behavior-x: none;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    text-wrap: balance;
+    font-family: 'IvyPresto Display', 'Iowan Old Style', 'Georgia', 'Times New Roman', serif;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+  }
+}
+
+@layer utilities {
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* MU signature gradient text — matches divider gradient */
+  .mu-gradient-text,
+  .mu-gradient-text-cool,
+  .mu-gradient-text-warm,
+  .mu-gradient-text-vivid {
+    background: linear-gradient(91deg, #39B5D7 -6.14%, #F7D544 47.02%, #E38330 99.71%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* MU signature gradient for filled buttons/badges */
+  .mu-btn-gradient {
+    background: linear-gradient(91deg, #39B5D7 -6.14%, #F7D544 47.02%, #E38330 99.71%);
+  }
+
+  /* Full rainbow gradient button */
+  .mu-btn-rainbow {
+    background: linear-gradient(91deg, #39B5D7 -6.14%, #F7D544 47.02%, #E38330 99.71%);
+  }
+
+  /* Cool gradient button */
+  .mu-btn-cool {
+    background: linear-gradient(91deg, #39B5D7 -6.14%, #F7D544 47.02%, #E38330 99.71%);
+  }
+
+  /* ---- Section background variants ---- */
+
+  .mu-section-dark {
+    background:
+      radial-gradient(ellipse 50% 40% at 50% 0%, rgba(57, 181, 215, 0.05) 0%, transparent 60%),
+      hsl(var(--mu-black));
+    color: hsl(0, 0%, 100%);
+  }
+
+  /* Dark with centered top glow (brand mix) */
+  .mu-section-dark-glow {
+    background:
+      radial-gradient(ellipse 80% 40% at 50% 0%, rgba(57, 181, 215, 0.12) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 30% at 80% 0%, rgba(227, 131, 48, 0.08) 0%, transparent 50%),
+      hsl(var(--mu-black));
+    color: hsl(0, 0%, 100%);
+  }
+
+  /* Dark with left-side purple glow */
+  .mu-section-dark-teal {
+    background:
+      radial-gradient(ellipse 50% 60% at 0% 50%, rgba(57, 181, 215, 0.07) 0%, transparent 70%),
+      hsl(var(--mu-black));
+    color: hsl(0, 0%, 100%);
+  }
+
+  /* Dark with right-side yellow glow */
+  .mu-section-dark-warm {
+    background:
+      radial-gradient(ellipse 50% 60% at 100% 50%, rgba(227, 131, 48, 0.07) 0%, transparent 70%),
+      hsl(var(--mu-black));
+    color: hsl(0, 0%, 100%);
+  }
+
+  /* Dark with purple + yellow dual glow */
+  .mu-section-dark-vivid {
+    background:
+      radial-gradient(ellipse 50% 50% at 20% 0%, rgba(57, 181, 215, 0.08) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 50% at 80% 100%, rgba(227, 131, 48, 0.06) 0%, transparent 60%),
+      hsl(var(--mu-black));
+    color: hsl(0, 0%, 100%);
+  }
+
+  /* Full-width signature gradient band */
+  .mu-section-gradient-band {
+    background: linear-gradient(91deg, #39B5D7 -6.14%, #F7D544 47.02%, #E38330 99.71%);
+    color: hsl(0, 0%, 7%);
+  }
+
+  /* Vivid gradient section */
+  .mu-section-gradient-vivid {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 30%, #0f3460 60%, #1a1a2e 100%);
+    color: hsl(0, 0%, 100%);
+  }
+
+  .mu-section-light {
+    background:
+      radial-gradient(ellipse 50% 40% at 80% 0%, rgba(57, 181, 215, 0.04) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 30% at 20% 100%, rgba(247, 213, 68, 0.03) 0%, transparent 50%),
+      hsl(var(--background));
+    color: hsl(var(--foreground));
+  }
+
+  .mu-section-gray {
+    background-color: hsl(var(--mu-gray-100));
+    color: hsl(var(--foreground));
+  }
+
+  .mu-container {
+    @apply max-w-[1200px] 2xl:max-w-[1400px] mx-auto px-4 sm:px-6 md:px-8 lg:px-10;
+  }
+
+  .mu-section-padding {
+    @apply py-12 sm:py-16 md:py-20 lg:py-24 2xl:py-28;
+  }
+
+  .mu-card {
+    @apply rounded bg-card border border-border shadow-sm;
+  }
+
+  .mu-card-dark {
+    @apply rounded;
+    background-color: hsl(var(--mu-dark-surface));
+    border: 1px solid hsl(0, 0%, 16%);
+  }
+
+  /* Card with gradient top border */
+  .mu-card-rainbow {
+    @apply rounded;
+    background-color: hsl(var(--mu-dark-surface));
+    border: 1px solid hsl(0, 0%, 16%);
+    border-top: 2px solid transparent;
+    border-image: linear-gradient(91deg, #39B5D7 -6.14%, #F7D544 47.02%, #E38330 99.71%) 1;
+    border-image-slice: 1;
+  }
+
+  /* Gradient border card */
+  .mu-card-gradient-border {
+    position: relative;
+    @apply rounded;
+    background-color: hsl(var(--mu-dark-surface));
+  }
+  .mu-card-gradient-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(91deg, rgba(57, 181, 215, 0.3), rgba(247, 213, 68, 0.25), rgba(227, 131, 48, 0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  .mu-card-hover {
+    @apply transition-all duration-300;
+  }
+  .mu-card-hover:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px -8px rgba(0,0,0,0.12);
+  }
+
+  /* Glow effect on hover for dark cards */
+  .mu-card-glow:hover {
+    box-shadow: 0 0 30px -5px rgba(57, 181, 215, 0.15), 0 0 20px -5px rgba(227, 131, 48, 0.1);
+  }
+
+  /* Neomorphic dark card — sharp edges */
+  .mu-card-neu {
+    border-radius: 0;
+    background-color: hsl(var(--mu-dark-surface));
+    box-shadow:
+      6px 6px 16px 0 rgba(0, 0, 0, 0.6),
+      -4px -4px 12px 0 rgba(255, 255, 255, 0.04);
+    border: 1px solid hsl(0, 0%, 14%);
+  }
+  .mu-card-neu:hover {
+    box-shadow:
+      8px 8px 20px 0 rgba(0, 0, 0, 0.7),
+      -5px -5px 14px 0 rgba(255, 255, 255, 0.06),
+      0 0 20px -4px rgba(57, 181, 215, 0.1);
+  }
+
+  /* 3D raised card — neomorphic with depth */
+  .mu-card-3d {
+    @apply rounded;
+    background: linear-gradient(145deg, hsl(0 0% 13%), hsl(0 0% 9%));
+    border: 1px solid hsl(0 0% 16%);
+    box-shadow:
+      8px 8px 20px 0 rgba(0, 0, 0, 0.7),
+      -6px -6px 16px 0 rgba(255, 255, 255, 0.04),
+      inset 1px 1px 2px 0 rgba(255, 255, 255, 0.06),
+      inset -1px -1px 2px 0 rgba(0, 0, 0, 0.3);
+  }
+  .mu-card-3d:hover {
+    box-shadow:
+      10px 10px 24px 0 rgba(0, 0, 0, 0.8),
+      -8px -8px 20px 0 rgba(255, 255, 255, 0.06),
+      inset 1px 1px 3px 0 rgba(255, 255, 255, 0.08),
+      inset -1px -1px 3px 0 rgba(0, 0, 0, 0.4);
+  }
+
+  .mu-label {
+    @apply text-xs font-medium tracking-wide;
+    color: hsl(var(--mu-gray-500));
+  }
+
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+
+  /* Gold star icon color */
+  .mu-gold {
+    color: hsl(var(--mu-gold));
+  }
+
+  /* Scrollbar hidden for horizontal scroll */
+  .mu-scroll-hidden::-webkit-scrollbar {
+    display: none;
+  }
+  .mu-scroll-hidden {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Rainbow underline */
+  .mu-underline-rainbow {
+    background-image: linear-gradient(91deg, #39B5D7 -6.14%, #F7D544 47.02%, #E38330 99.71%);
+    background-size: 100% 3px;
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+  }
+
+  /* Gradient border pill */
+  .mu-pill-gradient {
+    position: relative;
+    background-color: rgba(255,255,255,0.04);
+    color: rgba(255,255,255,0.70);
+  }
+  .mu-pill-gradient::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 1px;
+    border-radius: inherit;
+    background: linear-gradient(91deg, rgba(57,181,215,0.4), rgba(247,213,68,0.35), rgba(227,131,48,0.3));
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+
+  /* Gradient divider line */
+  .mu-divider-gradient {
+    height: 2px;
+    background: linear-gradient(91deg, #39B5D7 -6.14%, #F7D544 47.02%, #E38330 99.71%);
+  }
+
+  /* Safe area for bottom nav */
+  .safe-bottom {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+
+  /* Recruiter scroll animation */
+  @keyframes scroll-left {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+  .animate-scroll-left {
+    animation: scroll-left 30s linear infinite;
+  }
+
+  /* Mobile bottom spacing for fixed nav */
+  .pb-mobile-nav {
+    padding-bottom: 68px;
+  }
+
+  /* Prevent text size inflation on orientation change */
+  @media (max-width: 767px) {
+    html {
+      -moz-text-size-adjust: 100%;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+  }
+
+  /* Touch-friendly tap targets */
+  @media (pointer: coarse) {
+    button, a, [role="button"] {
+      min-height: 40px;
+    }
+    /* Smaller tap targets for inline/grid navigation items */
+    .mu-nav-compact button,
+    .mu-nav-compact a,
+    nav button,
+    nav a {
+      min-height: 36px;
+    }
+    /* Enable momentum scrolling on touch for horizontal scroll containers */
+    .mu-scroll-hidden,
+    [style*="scrollbar-width: none"] {
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+    }
+  }
+
+  /* Small mobile adjustments */
+  @media (max-width: 419px) {
+    .mu-container {
+      @apply px-3;
+    }
+    .mu-section-padding {
+      @apply py-10;
+    }
+  }
+
+  /* Tablet-specific adjustments */
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .mu-section-padding {
+      @apply py-14;
+    }
+    .mu-container {
+      @apply px-6;
+    }
+  }
+
+  /* Snap scrolling for touch */
+  .snap-x {
+    scroll-snap-type: x mandatory;
+  }
+  .snap-start {
+    scroll-snap-align: start;
+  }
+}
