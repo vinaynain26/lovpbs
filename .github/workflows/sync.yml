@@ -1,0 +1,77 @@
+name: Convert to HBS and Push to pbs
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout lovpbs repo
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install Chromium dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            libgbm-dev \
+            libnss3 \
+            libatk1.0-0 \
+            libatk-bridge2.0-0 \
+            libcups2 \
+            libdrm2 \
+            libxkbcommon0 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxfixes3 \
+            libxrandr2 \
+            libpango-1.0-0 \
+            libcairo2 \
+            libasound2t64
+
+      - name: Install dependencies
+        run: bun install
+
+      - name: Install Puppeteer
+        run: bun add puppeteer --dev
+
+      - name: Run convert script
+        run: node convert.cjs pgptbm-index
+        env:
+          SKIP_PREFLIGHT_CHECK: true
+          NODE_ENV: production
+
+      - name: Checkout pbs repo
+        uses: actions/checkout@v4
+        with:
+          repository: vinaynain26/pbs
+          token: ${{ secrets.TARGET_REPO_TOKEN }}
+          path: target-repo
+
+      - name: Copy files into pbs repo
+        run: |
+          mkdir -p target-repo/views/layouts
+          cp hbs-output/views/pgptbm-index.hbs target-repo/views/pgptbm-index.hbs
+          cp hbs-output/views/layouts/pgptbm-index.hbs target-repo/views/layouts/pgptbm-index.hbs
+          cp hbs-output/route-pgptbm-index.js target-repo/route-pgptbm-index.js
+
+      - name: Push to pbs repo
+        run: |
+          cd target-repo
+          git config user.email "automation@lovable-sync.com"
+          git config user.name "Lovable Sync Bot"
+          git checkout -B lovpbs-sync
+          git add .
+          git commit -m "🤖 Auto-sync from lovpbs"
+          git push https://vinaynain26:${{ secrets.TARGET_REPO_TOKEN }}@github.com/vinaynain26/pbs.git lovpbs-sync --force
