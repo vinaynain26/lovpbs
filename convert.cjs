@@ -19,18 +19,17 @@ function getCompiledCSS() {
   return fs.readFileSync(path.join(assetsDir, cssFile), "utf-8");
 }
 
-// ─── Step 3: Get compiled JS from dist ───
-function getCompiledJS() {
+// ─── Step 3: Get compiled JS filename from dist ───
+function getCompiledJSFilename() {
   const assetsDir = path.join("dist", "assets");
   if (!fs.existsSync(assetsDir)) return "";
   const jsFiles = fs.readdirSync(assetsDir).filter(f => f.endsWith(".js"));
   if (!jsFiles.length) return "";
-  // Grab the largest JS file (main bundle)
   const mainJS = jsFiles
     .map(f => ({ name: f, size: fs.statSync(path.join(assetsDir, f)).size }))
     .sort((a, b) => b.size - a.size)[0].name;
   console.log(`✅ Found compiled JS: ${mainJS}`);
-  return fs.readFileSync(path.join(assetsDir, mainJS), "utf-8");
+  return mainJS;
 }
 
 // ─── Step 4: Serve dist and scrape ───
@@ -100,7 +99,7 @@ async function scrapeRenderedHTML() {
   try {
     const mainHTML = await scrapeRenderedHTML();
     const compiledCSS = getCompiledCSS();
-    const compiledJS = getCompiledJS();
+    const jsFilename = getCompiledJSFilename();
     const indexCSS = fs.existsSync("src/index.css")
       ? fs.readFileSync("src/index.css", "utf-8")
       : "";
@@ -124,9 +123,7 @@ async function scrapeRenderedHTML() {
     {{> header/header}}
     {{{body}}}
     {{> footer/footer}}
-    <script>
-      ${compiledJS}
-    </script>
+    <script src="/assets/${jsFilename}"></script>
   </body>
 </html>`;
 

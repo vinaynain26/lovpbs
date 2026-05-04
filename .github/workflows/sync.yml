@@ -62,9 +62,14 @@ jobs:
       - name: Copy files into pbs repo
         run: |
           mkdir -p target-repo/views/layouts
+          mkdir -p target-repo/public/assets
           cp hbs-output/views/pgptbm-index.hbs target-repo/views/pgptbm-index.hbs
           cp hbs-output/views/layouts/pgptbm-index.hbs target-repo/views/layouts/pgptbm-index.hbs
           cp hbs-output/route-pgptbm-index.js target-repo/route-pgptbm-index.js
+          cp -r public/. target-repo/public/
+          cp -r src/assets/. target-repo/public/assets/
+          cp dist/assets/*.js target-repo/public/assets/
+          cp dist/assets/*.css target-repo/public/assets/
 
       - name: Push to pbs repo
         run: |
@@ -75,13 +80,3 @@ jobs:
           git add .
           git commit -m "🤖 Auto-sync from lovpbs"
           git push https://vinaynain26:${{ secrets.TARGET_REPO_TOKEN }}@github.com/vinaynain26/pbs.git lovpbs-sync --force
-
-      - name: Copy files into pbs repo
-        run: |
-            mkdir -p target-repo/views/layouts
-            mkdir -p target-repo/public
-            cp hbs-output/views/pgptbm-index.hbs target-repo/views/pgptbm-index.hbs
-            cp hbs-output/views/layouts/pgptbm-index.hbs target-repo/views/layouts/pgptbm-index.hbs
-            cp hbs-output/route-pgptbm-index.js target-repo/route-pgptbm-index.js
-            cp -r public/. target-repo/public/
-            cp -r dist/assets/. target-repo/public/assets/
