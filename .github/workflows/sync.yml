@@ -68,8 +68,7 @@ jobs:
           cp hbs-output/route-pgptbm-index.js target-repo/route-pgptbm-index.js
           cp -r public/. target-repo/public/
           cp -r src/assets/. target-repo/public/assets/
-          cp dist/assets/*.js target-repo/public/assets/
-          cp dist/assets/*.css target-repo/public/assets/
+          cp -r dist/assets/. target-repo/public/assets/
 
       - name: Push to pbs repo
         run: |
